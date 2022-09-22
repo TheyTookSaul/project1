@@ -18,18 +18,20 @@ function stop(){
   
 
   class Block{
-    constructor(x, y, width, height, speedX, speedY, color){
+    constructor(x, y, width, height, speedX, speedY, r, g, b){
       this.x = x;
       this.y = y;
       this.width = width;
       this.height = height;
       this.speedX = speedX;
       this.speedY = speedY;
-      this.color = color;
+      this.r = r;
+      this.g = g;
+      this.b = b;
     }
 
     display(){
-      fill (this.color);
+      fill (this.r, this.g, this.b);
       rect(this.x, this.y, this.width, this.height)
       
 
@@ -37,15 +39,66 @@ function stop(){
     }
 
     move(){
+
+      document.addEventListener('keydown', function(event) {
+        if(keyCode == 87) {
+            keyCodeVar = 87;
+        }
+        else if(keyCode == 83) {
+            keyCodeVar = 83;
+        }
+      })
+
       this.x = this.x + this.speedX;
+
       if (this.x > (windowWidth - this.width) || this.x <= 0){
+        this.r = random(255);
+        this.g = random(255);
+        this.b = random(255);
         this.speedX = this.speedX * -1;
       }
 
       this.y = this.y + this.speedY;
       if (this.y > (windowHeight - this.height) || this.y <= 0){
+        this.r = random(255);
+        this.g = random(255);
+        this.b = random(255);
         this.speedY = this.speedY * -1;
       }
+
+      if (keyCodeVar == 87){
+        if(this.speedY > 0){
+          Block1.speedY = this.speedY * -1;
+          Block2.speedY = this.speedY * -1;
+          Block3.speedY = this.speedY * -1;
+        }
+        keyCodeVar = 0
+      }
+      else if(keyCodeVar == 83){
+        if(this.speedY < 0){
+          Block1.speedY = this.speedY * -1;
+          Block2.speedY = this.speedY * -1;
+          Block3.speedY = this.speedY * -1;
+        }
+        keyCodeVar = 0;
+      }
+      else if(keyCodeVar == 65){
+        if(this.speedX < 0){
+          Block1.speedX = this.speedX * -1;
+          Block2.speedX = this.speedX * -1;
+          Block3.speedX = this.speedX * -1;
+        }
+        keyCodeVar = 0;
+      }
+      else if(keyCodeVar == 68){
+        if(this.speedX < 0){
+          Block1.speedX = this.speedX * -1;
+          Block2.speedX = this.speedX * -1;
+          Block3.speedX = this.speedX * -1;
+        }
+        keyCodeVar = 0;
+      }
+
     }
 
     keyCheck(){
@@ -83,13 +136,10 @@ function stop(){
 
     Block1.display();
     Block1.move();
-    Block1.keyCheck();
     Block2.display();
     Block2.move();
-    Block2.keyCheck();
     Block3.display();
     Block3.move();
-    Block3.keyCheck();
 
     console.log(Block2)
   }
@@ -103,6 +153,22 @@ function stop(){
       else if(keyCode == 83) {
           keyCodeVar = 83;
       }
-  });
+      else if(keyCode == 65){
+          keyCodeVar = 65;
+      }
+      else if (keyCode == 68){
+          keyCodeVar = 68;
+      }
+
+      if(keyCode == 78){
+        
+          thing = new Block(500, 500,40,40,random(10),random(10), '#d88688')
+
+      }
+      }
+      
+      );
+
+
 
   }
