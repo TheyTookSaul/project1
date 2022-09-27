@@ -5,9 +5,9 @@ blockHeight = 30;
 blockSpeedX = 1;
 blockSpeedY = 1;
 keyCodeVar = 0;
-numBirds = 25;
+numBirds = 100;
 
-var colorPalette = ["#eeede9", "#d5d2cb", "#953232", "#511f20", "#fce2a5"];
+var colorPalette = ["#eeede9", "#d5d2cb", "#953232", "#511f20", "#fce2a5", "#ffcaab", "#ffd0a0", "#76a1ea", "#f8a966", "#2d5856", "#df8f90", "#ef2922"];
 
 followX = 600;
 followY = 600;
@@ -102,8 +102,8 @@ let Block1 = new Block(followX, followY, 30, 30, 8, 7, '#976370');
     background(0)
     for (var i = 0; i < numBirds; i++){
       birds[i] = {
-        x : 100 + (40 * i),
-        y : 100,
+        x : 100 + (50 * i),
+        y : 100 + (50 * i),
         width : 25,
         height : 25,
         speedX : 0,
@@ -113,7 +113,7 @@ let Block1 = new Block(followX, followY, 30, 30, 8, 7, '#976370');
         dX : -0.0005,
         dY : -0.0005,
         display: function(){
-          stroke(255);
+          stroke(this.color);
           fill(this.color);
           rect(this.x, this.y, this.width, this.height);
         },
@@ -129,25 +129,25 @@ let Block1 = new Block(followX, followY, 30, 30, 8, 7, '#976370');
           if (followX < this.x){
             if (this.dX < 0){
               this.dX *= -1;
-              this.color = colorPalette[0];
+              this.color = colorPalette[Math.floor(Math.random() * colorPalette.length)];
             }
           }
           if (followX > this.x){
             if (this.dX > 0){
               this.dX *= -1;
-              this.color = colorPalette[1];
+              this.color = colorPalette[Math.floor(Math.random() * colorPalette.length)];
             }
           }
           if (followY < this.y){
             if (this.dY < 0){
               this.dY *= -1;
-              this.color = colorPalette[2];
+              this.color = colorPalette[Math.floor(Math.random() * colorPalette.length)];
             }
           }
           if (followY > this.y){
             if (this.dY > 0){
               this.dY *= -1;
-              this.color = colorPalette[3];
+              this.color = colorPalette[Math.floor(Math.random() * colorPalette.length)];
             }
           }
 
@@ -158,29 +158,31 @@ let Block1 = new Block(followX, followY, 30, 30, 8, 7, '#976370');
             this.dY *= -1;
           }
 
-          for (var i = 0; i < numBirds; i++){
-            if (birds[i].value != this.value){
-              if((this.x && this.y) == (birds[i].x && birds[i].y)){
-                this.x -= 500
-                this.y -= 100
-                birds[i].x += 500
-                birds[i].y += 100
-              }
-            }
-          }
         },
 
         collisionDetection : function(){
           for (var i = 0; i < numBirds; i++){
-            console.log(this.x );
-            if (birds[i].value != this.value){
-              if(birds[i].x >= (this.x + this.width) || (birds[i].x + birds[i].width) <= this.x || birds[i].y >= (this.y + this.height) || (birds[i].y + birds[i].height) <= this.y){
-                console.log("IOHAOWHIOIHADOIIOHAIOHSD");
-                this.color = colorPalette[4];
-                birds[i].x += 6;
-                birds[i].y += 6;
-                this.x -= 6;
-                this.y -= 6;
+            if(this.value != birds[i].value){
+              var distance = dist(this.x, this.y, birds[i].x, birds[i].y);
+
+              if (distance < this.width + birds[i].width){
+                console.log("COLIDE")
+                if(this.x > birds[i].x){
+                  this.x += 1
+                  birds[i].x -= 1
+                }
+                else{
+                  this.x -= 1
+                  birds[i].x += 1
+                }
+                if(this.y > birds[i].y){
+                  this.y += 1
+                  birds[i].y -= 1
+                }
+                else{
+                  this.y -= 1
+                  birds[i].y += 1
+                }
                 }
               }
             }
@@ -213,6 +215,9 @@ let Block1 = new Block(followX, followY, 30, 30, 8, 7, '#976370');
         }
         else if (keyCode == 68){
             keyCodeVar = 68;
+        }
+        else if (keyCode == 32){
+          keyCodeVar = 32;
         }
         })
   
@@ -252,6 +257,10 @@ let Block1 = new Block(followX, followY, 30, 30, 8, 7, '#976370');
           }
           keyCodeVar = 0;
         }
+        if(keyCodeVar == 32){
+          background(0);
+          keyCodeVar = 0;
+        }
         followX = this.x;
         followY = this.y;
       } 
@@ -261,8 +270,6 @@ let Block1 = new Block(followX, followY, 30, 30, 8, 7, '#976370');
 
   function draw() 
   {
-
-    background(0);
 
     followSquare.display();
     followSquare.move();
